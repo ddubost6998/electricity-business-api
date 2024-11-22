@@ -21,15 +21,11 @@ public class ChargingStationDTO {
     public ChargingStationDTO() {
     }
 
-    public ChargingStationDTO(Long id, String name, Double hourlyRate, Double power, String instruction,
-                               Boolean isAvailable, UserDTO owner, LocationDTO location) {
+    public ChargingStationDTO(Long id, String name, Double hourlyRate, Double power, LocationDTO location) {
         this.id = id;
         this.name = name;
         this.hourlyRate = hourlyRate;
         this.power = power;
-        this.instruction = instruction;
-        this.isAvailable = isAvailable;
-        this.owner = owner;
         this.location = location;
     }
 
