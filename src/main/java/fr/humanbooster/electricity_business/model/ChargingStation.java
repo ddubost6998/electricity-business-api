@@ -54,16 +54,11 @@ public class ChargingStation {
     public ChargingStation() {
     }
 
-    public ChargingStation(String name, Double hourlyRate, Double power, String instruction, String picture, String video,
-                           Boolean isAvailable, User owner, Location location) {
+    public ChargingStation(String name, Double hourlyRate, Double power, String video, Location location) {
         this.name = name;
         this.hourlyRate = hourlyRate;
         this.power = power;
-        this.instruction = instruction;
-        this.picture = picture;
         this.video = video;
-        this.isAvailable = isAvailable;
-        this.owner = owner;
         this.location = location;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
@@ -165,7 +160,6 @@ public class ChargingStation {
         this.updatedAt = updatedAt;
     }
 
-    // Méthode appelée avant l'update pour mettre à jour la date
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();

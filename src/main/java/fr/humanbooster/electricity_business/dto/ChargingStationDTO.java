@@ -69,7 +69,7 @@ public class ChargingStationDTO {
         this.instruction = instruction;
     }
 
-    public Boolean isAvailable() {
+    public Boolean getIsAvailable() {
         return isAvailable;
     }
 
