@@ -1,18 +1,37 @@
 package fr.humanbooster.electricity_business.dto;
 
-import fr.humanbooster.electricity_business.model.UserDTO;
-import fr.humanbooster.electricity_business.model.LocationDTO;
-
 public class ChargingStationDTO {
 
     private Long id;
+
     private String name;
+
     private Double hourlyRate;
+
     private Double power;
+
     private String instruction;
+
     private Boolean isAvailable;
+
     private UserDTO owner;
+
     private LocationDTO location;
+
+    public ChargingStationDTO() {
+    }
+
+    public ChargingStationDTO(Long id, String name, Double hourlyRate, Double power, String instruction,
+                               Boolean isAvailable, UserDTO owner, LocationDTO location) {
+        this.id = id;
+        this.name = name;
+        this.hourlyRate = hourlyRate;
+        this.power = power;
+        this.instruction = instruction;
+        this.isAvailable = isAvailable;
+        this.owner = owner;
+        this.location = location;
+    }
 
     public Long getId() {
         return id;
@@ -54,12 +73,12 @@ public class ChargingStationDTO {
         this.instruction = instruction;
     }
 
-    public Boolean getIsAvailable() {
+    public Boolean isAvailable() {
         return isAvailable;
     }
 
-    public void setIsAvailable(Boolean isAvailable) {
-        this.isAvailable = isAvailable;
+    public void setAvailable(Boolean available) {
+        isAvailable = available;
     }
 
     public UserDTO getOwner() {
@@ -76,5 +95,19 @@ public class ChargingStationDTO {
 
     public void setLocation(LocationDTO location) {
         this.location = location;
+    }
+
+    @Override
+    public String toString() {
+        return "ChargingStationDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", hourlyRate=" + hourlyRate +
+                ", power=" + power +
+                ", instruction='" + instruction + '\'' +
+                ", isAvailable=" + isAvailable +
+                ", owner=" + owner +
+                ", location=" + location +
+                '}';
     }
 }
