@@ -4,6 +4,7 @@ import fr.humanbooster.electricity_business.dto.UserDTO;
 import fr.humanbooster.electricity_business.mapper.UserMapper;
 import fr.humanbooster.electricity_business.model.User;
 import fr.humanbooster.electricity_business.repository.UserRepository;
+import fr.humanbooster.electricity_business.service.MailService;
 import fr.humanbooster.electricity_business.service.UserService;
 
 import org.springframework.stereotype.Service;
@@ -16,10 +17,29 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final MailService mailService;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, MailService mailService) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.mailService = mailService;
+    }
+
+    @Override
+    public UserDTO registerUser(UserDTO userDTO) {
+        User user = userMapper.toEntity(userDTO);
+
+        User savedUser = userRepository.save(user);
+
+        mailService.sendEmail(
+            savedUser.getEmail(),
+            "Bienvenue chez Electricity Business",
+            "Bonjour " + savedUser.getFirstname() + ",\n\n" +
+            "Merci de vous être inscrit sur notre plateforme. Nous sommes ravis de vous compter parmi nous.\n\n" +
+            "Cordialement,\nL'équipe Electricity Business."
+        );
+
+        return userMapper.toDTO(savedUser);
     }
 
     @Override
