@@ -1,37 +1,28 @@
 package fr.humanbooster.electricity_business.dto;
 
+import java.time.LocalDate;
+
 public class UserDTO {
 
     private Long id;
-
     private String firstname;
-
     private String lastname;
-
     private String email;
-
-    private String password;
-
     private String phone;
+    private LocalDate birthdate;
+    private Boolean isVerified;
 
     public UserDTO() {
     }
 
-    public UserDTO(Long id, String firstname, String lastname, String email, String password, String phone) {
+    public UserDTO(Long id, String firstname, String lastname, String email, String phone, LocalDate birthdate, Boolean isVerified) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
-        this.password = password;
         this.phone = phone;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+        this.birthdate = birthdate;
+        this.isVerified = isVerified;
     }
 
     public Long getId() {
@@ -72,5 +63,34 @@ public class UserDTO {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public LocalDate getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public Boolean getVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(Boolean verified) {
+        isVerified = verified;
+    }
+
+    @Override
+    public String toString() {
+        return "UserResponseDTO{" +
+                "id=" + id +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", birthdate=" + birthdate +
+                ", isVerified=" + isVerified +
+                '}';
     }
 }
