@@ -1,6 +1,7 @@
 package fr.humanbooster.electricity_business.service.impl;
 
 import fr.humanbooster.electricity_business.dto.AddressDTO;
+import fr.humanbooster.electricity_business.dto.AddressRequestDTO;
 import fr.humanbooster.electricity_business.mapper.AddressMapper;
 import fr.humanbooster.electricity_business.model.Address;
 import fr.humanbooster.electricity_business.repository.AddressRepository;
@@ -22,45 +23,44 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public AddressDTO createAddress(AddressDTO addressDTO) {
-        Address address = addressMapper.toEntity(addressDTO);
-        Address savedAddress = addressRepository.save(address);
-        return addressMapper.toDTO(savedAddress);
-    }
+    public AddressDTO createAddress(AddressRequestDTO addressRequestDTO) {
 
-    private static final String ADDRESS_NOT_FOUND_MESSAGE = "Address not found with id: ";
+        Address address = addressMapper.toEntity(addressRequestDTO);
+
+        Address savedAddress = addressRepository.save(address);
+
+        return addressMapper.toDto(savedAddress);
+    }
 
     @Override
     public AddressDTO getAddressById(Long id) {
         return addressRepository.findById(id)
-                .map(addressMapper::toDTO)
-                .orElseThrow(() -> new RuntimeException(ADDRESS_NOT_FOUND_MESSAGE + id));
+                .map(addressMapper::toDto)
+                .orElseThrow(() -> new RuntimeException("Address not found with id: " + id));
     }
 
     @Override
     public List<AddressDTO> getAllAddresses() {
         return addressRepository.findAll().stream()
-                .map(addressMapper::toDTO)
+                .map(addressMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public AddressDTO updateAddress(Long id, AddressDTO addressDTO) {
+    public AddressDTO updateAddress(Long id, AddressRequestDTO addressRequestDTO) {
         Address existingAddress = addressRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(ADDRESS_NOT_FOUND_MESSAGE + id));
+                .orElseThrow(() -> new RuntimeException("Address not found with id: " + id));
 
-        existingAddress.setStreet(addressDTO.getStreet());
-        existingAddress.setCity(addressDTO.getCity());
-        existingAddress.setZipcode(addressDTO.getZipcode());
+        addressMapper.updateEntityFromDto(addressRequestDTO, existingAddress);
 
         Address updatedAddress = addressRepository.save(existingAddress);
-        return addressMapper.toDTO(updatedAddress);
+        return addressMapper.toDto(updatedAddress);
     }
 
     @Override
     public void deleteAddress(Long id) {
         Address address = addressRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(ADDRESS_NOT_FOUND_MESSAGE + id));
+                .orElseThrow(() -> new RuntimeException("Address not found with id: " + id));
         addressRepository.delete(address);
     }
 }

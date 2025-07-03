@@ -1,35 +1,20 @@
 package fr.humanbooster.electricity_business.mapper;
 
 import fr.humanbooster.electricity_business.dto.AddressDTO;
+import fr.humanbooster.electricity_business.dto.AddressRequestDTO;
 import fr.humanbooster.electricity_business.model.Address;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-@Component
-public class AddressMapper {
+@Mapper(componentModel = "spring")
+public interface AddressMapper {
 
-    public AddressDTO toDTO(Address entity) {
-        if (entity == null) {
-            return null;
-        }
+    AddressDTO toDto(Address address);
 
-        AddressDTO dto = new AddressDTO();
-        dto.setId(entity.getId());
-        dto.setStreet(entity.getStreet());
-        dto.setCity(entity.getCity());
-        dto.setZipcode(entity.getZipcode());
-        return dto;
-    }
+    @Mapping(target = "id", ignore = true)
+    Address toEntity(AddressRequestDTO addressRequestDTO);
 
-    public Address toEntity(AddressDTO dto) {
-        if (dto == null) {
-            return null;
-        }
-
-        Address entity = new Address();
-        entity.setId(dto.getId());
-        entity.setStreet(dto.getStreet());
-        entity.setCity(dto.getCity());
-        entity.setZipcode(dto.getZipcode());
-        return entity;
-    }
+    @Mapping(target = "id", ignore = true)
+    void updateEntityFromDto(AddressRequestDTO addressRequestDTO, @MappingTarget Address address);
 }
