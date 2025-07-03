@@ -1,16 +1,17 @@
 package fr.humanbooster.electricity_business.service;
 
 import fr.humanbooster.electricity_business.dto.UserDTO;
-
+import fr.humanbooster.electricity_business.dto.UserRegisterDTO;
+import fr.humanbooster.electricity_business.dto.UserLoginDTO;
 import java.util.List;
 
 public interface UserService {
 
-    UserDTO registerUser(UserDTO userDTO);
+    UserDTO registerUser(UserRegisterDTO userRegisterDTO);
 
-    UserDTO createUser(UserDTO userDTO);
+    UserDTO createUser(UserRegisterDTO userRegisterDTO);
 
-    UserDTO loginUser(UserDTO userDTO);
+    UserDTO loginUser(UserLoginDTO userLoginDTO);
 
     UserDTO getUserById(Long id);
 

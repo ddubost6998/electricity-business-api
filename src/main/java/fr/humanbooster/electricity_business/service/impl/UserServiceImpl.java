@@ -1,14 +1,18 @@
 package fr.humanbooster.electricity_business.service.impl;
 
 import fr.humanbooster.electricity_business.dto.UserDTO;
+import fr.humanbooster.electricity_business.dto.UserRegisterDTO;
+import fr.humanbooster.electricity_business.dto.UserLoginDTO;
 import fr.humanbooster.electricity_business.mapper.UserMapper;
 import fr.humanbooster.electricity_business.model.User;
-import fr.humanbooster.electricity_business.repository.UserRepository;
 import fr.humanbooster.electricity_business.service.UserService;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,8 +29,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO registerUser(UserDTO userDTO) {
-        User user = userMapper.toEntity(userDTO);
+    public UserDTO registerUser(UserRegisterDTO userRegisterDTO) {
+
+        User user = userMapper.toEntity(userRegisterDTO);
+
+        String plainPassword = user.getPassword();
+        if (plainPassword == null || plainPassword.isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be empty for registration.");
+        }
+        user.setPassword(BCrypt.hashpw(plainPassword, BCrypt.gensalt()));
+
+        user.setVerified(false);
+        user.setVerificationCode(generateVerificationCode());
 
         User savedUser = userRepository.save(user);
 
@@ -42,21 +56,41 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO createUser(UserDTO userDTO) {
-        User user = userMapper.toEntity(userDTO);
+    public UserDTO createUser(UserRegisterDTO userRegisterDTO) {
+
+        User user = userMapper.toEntity(userRegisterDTO);
+
+        String plainPassword = user.getPassword();
+        if (plainPassword == null || plainPassword.isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be empty for creation.");
+        }
+        user.setPassword(BCrypt.hashpw(plainPassword, BCrypt.gensalt()));
+        user.setVerified(false);
+
         User savedUser = userRepository.save(user);
         return userMapper.toDTO(savedUser);
     }
 
     @Override
-    public UserDTO loginUser(UserDTO userDTO) {
-        User user = userRepository.findByEmail(userDTO.getEmail());
+    public UserDTO loginUser(UserLoginDTO userLoginDTO) {
 
-        if (BCrypt.checkpw(userDTO.getPassword(), user.getPassword())) {
+        Optional<User> userOptional = userRepository.findByEmail(userLoginDTO.getEmail());
+
+        if (userOptional.isEmpty()) {
+            throw new RuntimeException("Invalid credentials");
+        }
+
+        User user = userOptional.get();
+
+        if (BCrypt.checkpw(userLoginDTO.getPassword(), user.getPassword())) {
             return userMapper.toDTO(user);
         } else {
             throw new RuntimeException("Invalid credentials");
         }
+    }
+
+    private String generateVerificationCode() {
+        return UUID.randomUUID().toString();
     }
 
     @Override
@@ -75,13 +109,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO updateUser(Long id, UserDTO userDTO) {
+
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+                existingUser.setFirstname(userDTO.getFirstname());
+                existingUser.setLastname(userDTO.getLastname());
+                existingUser.setEmail(userDTO.getEmail());
+                existingUser.setPhone(userDTO.getPhone());
 
-        existingUser.setFirstname(userDTO.getFirstname());
-        existingUser.setLastname(userDTO.getLastname());
-        existingUser.setEmail(userDTO.getEmail());
-        existingUser.setPhone(userDTO.getPhone());
+        if (userDTO.getBirthdate() != null) {
+            existingUser.setBirthdate(userDTO.getBirthdate());
+        }
+        if (userDTO.getVerified() != null) {
+            existingUser.setVerified(userDTO.getVerified());
+        }
+
 
         User updatedUser = userRepository.save(existingUser);
         return userMapper.toDTO(updatedUser);
@@ -92,5 +134,9 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
         userRepository.delete(user);
+    }
+
+    public interface UserRepository extends JpaRepository<User, Long> {
+        Optional<User> findByEmail(String email);
     }
 }
