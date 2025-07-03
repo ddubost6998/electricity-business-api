@@ -5,8 +5,8 @@ import fr.humanbooster.electricity_business.dto.UserRegisterDTO;
 import fr.humanbooster.electricity_business.dto.UserLoginDTO;
 import fr.humanbooster.electricity_business.mapper.UserMapper;
 import fr.humanbooster.electricity_business.model.User;
+import fr.humanbooster.electricity_business.repository.UserRepository;
 import fr.humanbooster.electricity_business.service.UserService;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -134,9 +134,5 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
         userRepository.delete(user);
-    }
-
-    public interface UserRepository extends JpaRepository<User, Long> {
-        Optional<User> findByEmail(String email);
     }
 }

@@ -118,7 +118,6 @@ class UserServiceImplTest {
 
     @Test
     void shouldThrowExceptionWhenLoginWithInvalidCredentials() {
-        // Arrange
         UserLoginDTO loginDTO = new UserLoginDTO("test@example.com", "WrongPassword");
 
         User foundUser = new User();
@@ -168,7 +167,6 @@ class UserServiceImplTest {
 
     @Test
     void shouldGetAllUsers() {
-        // Arrange
         User user1 = new User();
         user1.setId(1L); user1.setFirstname("John"); user1.setEmail("john@example.com");
         User user2 = new User();
