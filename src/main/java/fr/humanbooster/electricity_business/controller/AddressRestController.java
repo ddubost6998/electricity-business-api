@@ -1,7 +1,9 @@
 package fr.humanbooster.electricity_business.controller;
 
 import fr.humanbooster.electricity_business.dto.AddressDTO;
+import fr.humanbooster.electricity_business.dto.AddressRequestDTO;
 import fr.humanbooster.electricity_business.service.AddressService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +21,8 @@ public class AddressRestController {
     }
 
     @PostMapping
-    public ResponseEntity<AddressDTO> createAddress(@RequestBody AddressDTO addressDTO) {
-        AddressDTO createdAddress = addressService.createAddress(addressDTO);
+    public ResponseEntity<AddressDTO> createAddress(@Valid @RequestBody AddressRequestDTO addressRequestDTO) {
+        AddressDTO createdAddress = addressService.createAddress(addressRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAddress);
     }
 
@@ -41,9 +43,9 @@ public class AddressRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AddressDTO> updateAddress(@PathVariable Long id, @RequestBody AddressDTO addressDTO) {
+    public ResponseEntity<AddressDTO> updateAddress(@PathVariable Long id, @Valid @RequestBody AddressRequestDTO addressRequestDTO) {
         try {
-            AddressDTO updatedAddress = addressService.updateAddress(id, addressDTO);
+            AddressDTO updatedAddress = addressService.updateAddress(id, addressRequestDTO);
             return ResponseEntity.ok(updatedAddress);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
