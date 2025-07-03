@@ -10,17 +10,28 @@ public class UserDTO {
 
     private String email;
 
+    private String password;
+
     private String phone;
 
     public UserDTO() {
     }
 
-    public UserDTO(Long id, String firstname, String lastname, String email, String phone) {
+    public UserDTO(Long id, String firstname, String lastname, String email, String password, String phone) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
+        this.password = password;
         this.phone = phone;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Long getId() {

@@ -5,7 +5,6 @@ import fr.humanbooster.electricity_business.mapper.ChargingStationMapper;
 import fr.humanbooster.electricity_business.model.ChargingStation;
 import fr.humanbooster.electricity_business.repository.ChargingStationRepository;
 import fr.humanbooster.electricity_business.service.ChargingStationService;
-
 import org.springframework.stereotype.Service;
 
 import java.util.List;

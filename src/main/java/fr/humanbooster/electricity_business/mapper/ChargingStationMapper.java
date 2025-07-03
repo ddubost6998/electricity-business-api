@@ -1,9 +1,8 @@
 package fr.humanbooster.electricity_business.mapper;
 
-import org.springframework.stereotype.Component;
-
 import fr.humanbooster.electricity_business.dto.ChargingStationDTO;
 import fr.humanbooster.electricity_business.model.ChargingStation;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ChargingStationMapper {

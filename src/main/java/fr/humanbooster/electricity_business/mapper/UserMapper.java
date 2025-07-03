@@ -1,8 +1,8 @@
 package fr.humanbooster.electricity_business.mapper;
 
-import org.springframework.stereotype.Component;
 import fr.humanbooster.electricity_business.dto.UserDTO;
 import fr.humanbooster.electricity_business.model.User;
+import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
@@ -31,6 +31,7 @@ public class UserMapper {
         entity.setFirstname(dto.getFirstname());
         entity.setLastname(dto.getLastname());
         entity.setEmail(dto.getEmail());
+        entity.setPassword(dto.getPassword());
         entity.setPhone(dto.getPhone());
         return entity;
     }

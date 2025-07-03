@@ -5,7 +5,6 @@ import fr.humanbooster.electricity_business.mapper.AddressMapper;
 import fr.humanbooster.electricity_business.model.Address;
 import fr.humanbooster.electricity_business.repository.AddressRepository;
 import fr.humanbooster.electricity_business.service.AddressService;
-
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,11 +28,13 @@ public class AddressServiceImpl implements AddressService {
         return addressMapper.toDTO(savedAddress);
     }
 
+    private static final String ADDRESS_NOT_FOUND_MESSAGE = "Address not found with id: ";
+
     @Override
     public AddressDTO getAddressById(Long id) {
         return addressRepository.findById(id)
                 .map(addressMapper::toDTO)
-                .orElseThrow(() -> new RuntimeException("Address not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException(ADDRESS_NOT_FOUND_MESSAGE + id));
     }
 
     @Override
@@ -46,7 +47,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public AddressDTO updateAddress(Long id, AddressDTO addressDTO) {
         Address existingAddress = addressRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Address not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException(ADDRESS_NOT_FOUND_MESSAGE + id));
 
         existingAddress.setStreet(addressDTO.getStreet());
         existingAddress.setCity(addressDTO.getCity());
@@ -59,7 +60,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public void deleteAddress(Long id) {
         Address address = addressRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Address not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException(ADDRESS_NOT_FOUND_MESSAGE + id));
         addressRepository.delete(address);
     }
 }

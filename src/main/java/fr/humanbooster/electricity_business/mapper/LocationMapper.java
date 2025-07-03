@@ -1,9 +1,8 @@
 package fr.humanbooster.electricity_business.mapper;
 
-import org.springframework.stereotype.Component;
-
 import fr.humanbooster.electricity_business.dto.LocationDTO;
 import fr.humanbooster.electricity_business.model.Location;
+import org.springframework.stereotype.Component;
 
 @Component
 public class LocationMapper {
@@ -14,13 +13,13 @@ public class LocationMapper {
         }
 
         return new LocationDTO(
-            entity.getId(),
-            entity.getAddress(),
-            entity.getCity(),
-            entity.getZipcode(),
-            entity.getLatitude(),
-            entity.getLongitude(),
-            entity.getCountry()
+                entity.getId(),
+                entity.getAddress(),
+                entity.getCity(),
+                entity.getZipcode(),
+                entity.getLatitude(),
+                entity.getLongitude(),
+                entity.getCountry()
         );
     }
 

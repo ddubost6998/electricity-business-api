@@ -12,7 +12,7 @@ public class AddressDTO {
 
     public AddressDTO() {
     }
-    
+
     public AddressDTO(Long id, String street, String city, String zipcode) {
         this.id = id;
         this.street = street;

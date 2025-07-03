@@ -18,13 +18,6 @@ public class ReservationDTO {
 
     private ReservationStatus status;
 
-    public enum ReservationStatus {
-        PENDING,
-        ACCEPTED,
-        REJECTED,
-        COMPLETED
-    }
-
     public ReservationDTO() {
     }
 
@@ -106,5 +99,12 @@ public class ReservationDTO {
                 ", totalPrice=" + totalPrice +
                 ", status=" + status +
                 '}';
+    }
+
+    public enum ReservationStatus {
+        PENDING,
+        ACCEPTED,
+        REJECTED,
+        COMPLETED
     }
 }

@@ -1,17 +1,8 @@
 package fr.humanbooster.electricity_business.model;
 
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PreUpdate;
+import java.time.LocalDateTime;
 
 @Entity
 public class Reservation {
@@ -46,14 +37,6 @@ public class Reservation {
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;
-
-    // Enumération des statuts de réservation
-    public enum ReservationStatus {
-        PENDING,      // En attente de confirmation
-        ACCEPTED,     // Acceptée
-        REJECTED,     // Rejetée
-        COMPLETED     // Terminée
-    }
 
     public Reservation() {
     }
@@ -146,5 +129,13 @@ public class Reservation {
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    // Enumération des statuts de réservation
+    public enum ReservationStatus {
+        PENDING,      // En attente de confirmation
+        ACCEPTED,     // Acceptée
+        REJECTED,     // Rejetée
+        COMPLETED     // Terminée
     }
 }

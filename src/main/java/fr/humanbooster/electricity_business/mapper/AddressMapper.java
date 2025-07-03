@@ -1,8 +1,8 @@
 package fr.humanbooster.electricity_business.mapper;
 
-import org.springframework.stereotype.Component;
 import fr.humanbooster.electricity_business.dto.AddressDTO;
 import fr.humanbooster.electricity_business.model.Address;
+import org.springframework.stereotype.Component;
 
 @Component
 public class AddressMapper {

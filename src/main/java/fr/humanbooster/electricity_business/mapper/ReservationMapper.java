@@ -1,9 +1,8 @@
 package fr.humanbooster.electricity_business.mapper;
 
-import org.springframework.stereotype.Component;
-
 import fr.humanbooster.electricity_business.dto.ReservationDTO;
 import fr.humanbooster.electricity_business.model.Reservation;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ReservationMapper {
@@ -14,13 +13,13 @@ public class ReservationMapper {
         }
 
         return new ReservationDTO(
-            entity.getId(),
-            entity.getUser() != null ? entity.getUser().getId() : null,
-            entity.getChargingStation() != null ? entity.getChargingStation().getId() : null,
-            entity.getStartTime(),
-            entity.getEndTime(),
-            entity.getTotalPrice(),
-            entity.getStatus() != null ? ReservationDTO.ReservationStatus.valueOf(entity.getStatus().name()) : null
+                entity.getId(),
+                entity.getUser() != null ? entity.getUser().getId() : null,
+                entity.getChargingStation() != null ? entity.getChargingStation().getId() : null,
+                entity.getStartTime(),
+                entity.getEndTime(),
+                entity.getTotalPrice(),
+                entity.getStatus() != null ? ReservationDTO.ReservationStatus.valueOf(entity.getStatus().name()) : null
         );
     }
 

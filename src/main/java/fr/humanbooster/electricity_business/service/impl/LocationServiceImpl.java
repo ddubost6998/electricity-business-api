@@ -5,7 +5,6 @@ import fr.humanbooster.electricity_business.mapper.LocationMapper;
 import fr.humanbooster.electricity_business.model.Location;
 import fr.humanbooster.electricity_business.repository.LocationRepository;
 import fr.humanbooster.electricity_business.service.LocationService;
-
 import org.springframework.stereotype.Service;
 
 import java.util.List;
