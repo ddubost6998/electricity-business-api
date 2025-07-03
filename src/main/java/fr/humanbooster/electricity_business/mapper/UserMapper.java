@@ -1,38 +1,23 @@
 package fr.humanbooster.electricity_business.mapper;
 
-import fr.humanbooster.electricity_business.dto.UserDTO;
+import fr.humanbooster.electricity_business.dto.UserRegisterDTO;
 import fr.humanbooster.electricity_business.model.User;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
-@Component
-public class UserMapper {
+@Mapper()
+public interface UserMapper {
 
-    public UserDTO toDTO(User entity) {
-        if (entity == null) {
-            return null;
-        }
+    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-        UserDTO dto = new UserDTO();
-        dto.setId(entity.getId());
-        dto.setFirstname(entity.getFirstname());
-        dto.setLastname(entity.getLastname());
-        dto.setEmail(entity.getEmail());
-        dto.setPhone(entity.getPhone());
-        return dto;
-    }
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "verificationCode", ignore = true)
+    @Mapping(target = "verified", ignore = true)
+    @Mapping(target = "address", ignore = true)
+    User toEntity(UserRegisterDTO userRegisterDTO);
 
-    public User toEntity(UserDTO dto) {
-        if (dto == null) {
-            return null;
-        }
+    @Mapping(target = "password", ignore = true)
+    UserRegisterDTO toDTO(User user);
 
-        User entity = new User();
-        entity.setId(dto.getId());
-        entity.setFirstname(dto.getFirstname());
-        entity.setLastname(dto.getLastname());
-        entity.setEmail(dto.getEmail());
-        entity.setPassword(dto.getPassword());
-        entity.setPhone(dto.getPhone());
-        return entity;
-    }
 }
