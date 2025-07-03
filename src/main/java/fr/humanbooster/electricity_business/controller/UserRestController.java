@@ -1,7 +1,10 @@
 package fr.humanbooster.electricity_business.controller;
 
 import fr.humanbooster.electricity_business.dto.UserDTO;
+import fr.humanbooster.electricity_business.dto.UserRegisterDTO;
+import fr.humanbooster.electricity_business.dto.UserLoginDTO;
 import fr.humanbooster.electricity_business.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,15 +22,15 @@ public class UserRestController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
-        UserDTO createdUser = userService.createUser(userDTO);
+    public ResponseEntity<UserDTO> registerUser(@Valid @RequestBody UserRegisterDTO userRegisterDTO) {
+        UserDTO createdUser = userService.registerUser(userRegisterDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserDTO> loginUser(@RequestBody UserDTO userDTO) {
-        UserDTO loginUser = userService.loginUser(userDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(loginUser);
+    public ResponseEntity<UserDTO> loginUser(@Valid @RequestBody UserLoginDTO userLoginDTO) {
+        UserDTO loggedInUser = userService.loginUser(userLoginDTO);
+        return ResponseEntity.ok(loggedInUser);
     }
 
     @GetMapping("/{id}")
@@ -47,7 +50,7 @@ public class UserRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
         try {
             UserDTO updatedUser = userService.updateUser(id, userDTO);
             return ResponseEntity.ok(updatedUser);
