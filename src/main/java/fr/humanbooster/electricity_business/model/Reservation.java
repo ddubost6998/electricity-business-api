@@ -1,6 +1,9 @@
 package fr.humanbooster.electricity_business.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Future;
 
 import java.time.LocalDateTime;
 
@@ -13,26 +16,34 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @NotNull
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "charging_station_id", nullable = false)
+    @NotNull
     private ChargingStation chargingStation;
 
     @Column(nullable = false)
+    @NotNull
+    @FutureOrPresent
     private LocalDateTime startTime;
 
     @Column(nullable = false)
+    @NotNull
+    @Future(message = "End time must be in the future")
     private LocalDateTime endTime;
 
     @Column(nullable = false)
+    @NotNull
     private Double totalPrice;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @NotNull
     private ReservationStatus status;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
@@ -49,7 +60,29 @@ public class Reservation {
         this.endTime = endTime;
         this.totalPrice = totalPrice;
         this.status = status;
+    }
+
+    public Reservation(Long id, User user, ChargingStation chargingStation, LocalDateTime startTime, LocalDateTime endTime,
+                       Double totalPrice, ReservationStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.user = user;
+        this.chargingStation = chargingStation;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.totalPrice = totalPrice;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    protected void prePersist() {
         this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void preUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
 
@@ -123,19 +156,5 @@ public class Reservation {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    // Méthode appelée avant chaque mise à jour pour rafraîchir la date de modification
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    // Enumération des statuts de réservation
-    public enum ReservationStatus {
-        PENDING,      // En attente de confirmation
-        ACCEPTED,     // Acceptée
-        REJECTED,     // Rejetée
-        COMPLETED     // Terminée
     }
 }
