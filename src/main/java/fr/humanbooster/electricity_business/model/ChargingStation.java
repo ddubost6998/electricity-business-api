@@ -1,6 +1,18 @@
 package fr.humanbooster.electricity_business.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
@@ -12,15 +24,22 @@ public class ChargingStation {
     private Long id;
 
     @Column(nullable = false)
+    @NotBlank(message = "Le nom est obligatoire")
+    @Size(max = 255)
     private String name;
 
     @Column(nullable = false)
+    @NotNull(message = "Le tarif horaire est obligatoire")
+    @Min(value = 0, message = "Le tarif horaire doit être positif ou nul")
     private Double hourlyRate;
 
     @Column(nullable = false)
+    @NotNull(message = "La puissance est obligatoire")
+    @Min(value = 0, message = "La puissance doit être positive ou nulle")
     private Double power;
 
     @Column(length = 500)
+    @Size(max = 500, message = "Les instructions ne peuvent pas dépasser 500 caractères")
     private String instruction;
 
     private String picture;
@@ -32,16 +51,20 @@ public class ChargingStation {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @NotNull(message = "Le propriétaire est obligatoire")
     private User owner;
 
     @ManyToOne
     @JoinColumn(name = "location_id", nullable = false)
+    @NotNull(message = "La localisation est obligatoire")
     private Location location;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
+    @NotNull
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
+    @NotNull
     private LocalDateTime updatedAt;
 
     public ChargingStation() {
@@ -53,7 +76,33 @@ public class ChargingStation {
         this.power = power;
         this.video = video;
         this.location = location;
+    }
+
+    public ChargingStation(Long id, String name, Double hourlyRate, Double power, String instruction, String picture,
+                           String video, Boolean isAvailable, User owner, Location location, LocalDateTime createdAt,
+                           LocalDateTime updatedAt) {
+        this.id = id;
+        this.name = name;
+        this.hourlyRate = hourlyRate;
+        this.power = power;
+        this.instruction = instruction;
+        this.picture = picture;
+        this.video = video;
+        this.isAvailable = isAvailable;
+        this.owner = owner;
+        this.location = location;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    protected void prePersist() {
         this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void preUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
 
@@ -151,10 +200,5 @@ public class ChargingStation {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
     }
 }
