@@ -1,42 +1,41 @@
 package fr.humanbooster.electricity_business.dto;
 
-import fr.humanbooster.electricity_business.model.ReservationStatus;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.DecimalMin;
+
 import java.time.LocalDateTime;
 
-public class ReservationDTO {
+public class ReservationRequestDTO {
 
-    private Long id;
+    @NotNull(message = "L'ID de l'utilisateur est obligatoire")
     private Long userId;
-    private Long chargingStationId;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private Double totalPrice;
-    private ReservationStatus status;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
-    public ReservationDTO() {
+    @NotNull(message = "L'ID de la station de recharge est obligatoire")
+    private Long chargingStationId;
+
+    @NotNull(message = "La date de début est obligatoire")
+    @FutureOrPresent(message = "La date de début doit être dans le présent ou le futur")
+    private LocalDateTime startTime;
+
+    @NotNull(message = "La date de fin est obligatoire")
+    @Future(message = "La date de fin doit être dans le futur")
+    private LocalDateTime endTime;
+
+    @NotNull(message = "Le prix total est obligatoire")
+    @DecimalMin(value = "0.0", message = "Le prix total doit être positif ou nul")
+    private Double totalPrice;
+
+    public ReservationRequestDTO() {
     }
 
-    public ReservationDTO(Long id, Long userId, Long chargingStationId, LocalDateTime startTime, LocalDateTime endTime,
-                          Double totalPrice, ReservationStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+    public ReservationRequestDTO(Long userId, Long chargingStationId, LocalDateTime startTime, LocalDateTime endTime, Double totalPrice) {
         this.userId = userId;
         this.chargingStationId = chargingStationId;
         this.startTime = startTime;
         this.endTime = endTime;
         this.totalPrice = totalPrice;
-        this.status = status;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getUserId() {
@@ -79,42 +78,14 @@ public class ReservationDTO {
         this.totalPrice = totalPrice;
     }
 
-    public ReservationStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(ReservationStatus status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
     @Override
     public String toString() {
-        return "ReservationDTO{" +
-                "id=" + id +
-                ", userId=" + userId +
+        return "ReservationRequestDTO{" +
+                "userId=" + userId +
                 ", chargingStationId=" + chargingStationId +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", totalPrice=" + totalPrice +
-                ", status=" + status +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
                 '}';
     }
 }

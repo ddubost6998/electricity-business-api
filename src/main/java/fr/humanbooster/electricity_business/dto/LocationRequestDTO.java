@@ -1,41 +1,50 @@
 package fr.humanbooster.electricity_business.dto;
 
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
-public class LocationDTO {
+public class LocationRequestDTO {
 
-    private Long id;
+    @NotBlank(message = "L'adresse est obligatoire")
+    @Size(max = 255, message = "L'adresse ne peut pas dépasser 255 caractères")
     private String address;
-    private String city;
-    private String zipcode;
-    private Double latitude;
-    private Double longitude;
-    private String country;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
-    public LocationDTO() {
+    @NotBlank(message = "La ville est obligatoire")
+    @Size(max = 100, message = "La ville ne peut pas dépasser 100 caractères")
+    private String city;
+
+    @NotBlank(message = "Le code postal est obligatoire")
+    @Pattern(regexp = "^[0-9]{5}$", message = "Le code postal doit contenir 5 chiffres")
+    private String zipcode;
+
+    @NotNull(message = "La latitude est obligatoire")
+    @DecimalMin(value = "-90.0", message = "La latitude doit être au minimum -90")
+    @DecimalMax(value = "90.0", message = "La latitude doit être au maximum 90")
+    private Double latitude;
+
+    @NotNull(message = "La longitude est obligatoire")
+    @DecimalMin(value = "-180.0", message = "La longitude doit être au minimum -180")
+    @DecimalMax(value = "180.0", message = "La longitude doit être au maximum 180")
+    private Double longitude;
+
+    @NotBlank(message = "Le pays est obligatoire")
+    @Size(max = 100, message = "Le pays ne peut pas dépasser 100 caractères")
+    private String country;
+
+    public LocationRequestDTO() {
     }
 
-    public LocationDTO(Long id, String address, String city, String zipcode, Double latitude, Double longitude,
-                       String country, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+    public LocationRequestDTO(String address, String city, String zipcode, Double latitude, Double longitude, String country) {
         this.address = address;
         this.city = city;
         this.zipcode = zipcode;
         this.latitude = latitude;
         this.longitude = longitude;
         this.country = country;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getAddress() {
@@ -86,34 +95,15 @@ public class LocationDTO {
         this.country = country;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
     @Override
     public String toString() {
-        return "LocationDTO{" +
-                "id=" + id +
-                ", address='" + address + '\'' +
+        return "LocationRequestDTO{" +
+                "address='" + address + '\'' +
                 ", city='" + city + '\'' +
                 ", zipcode='" + zipcode + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", country='" + country + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
                 '}';
     }
 }

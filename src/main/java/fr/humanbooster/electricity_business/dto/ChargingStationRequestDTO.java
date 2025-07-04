@@ -1,29 +1,44 @@
 package fr.humanbooster.electricity_business.dto;
 
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
-public class ChargingStationDTO {
+public class ChargingStationRequestDTO {
 
-    private Long id;
+    @NotBlank(message = "Le nom est obligatoire")
+    @Size(min = 2, max = 255, message = "Le nom doit contenir entre 2 et 255 caractères")
     private String name;
+
+    @NotNull(message = "Le tarif horaire est obligatoire")
+    @Min(value = 0, message = "Le tarif horaire doit être positif ou nul")
     private Double hourlyRate;
+
+    @NotNull(message = "La puissance est obligatoire")
+    @Min(value = 0, message = "La puissance doit être positive ou nulle")
     private Double power;
+
+    @Size(max = 500, message = "Les instructions ne peuvent pas dépasser 500 caractères")
     private String instruction;
+
     private String picture;
     private String video;
-    private Boolean isAvailable;
-    private UserDTO owner;
-    private LocationDTO location;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
-    public ChargingStationDTO() {
+    @NotNull(message = "Le statut de disponibilité est obligatoire")
+    private Boolean isAvailable;
+
+    @NotNull(message = "L'ID du propriétaire est obligatoire")
+    private Long ownerId;
+
+    @NotNull(message = "L'ID de la localisation est obligatoire")
+    private Long locationId;
+
+    public ChargingStationRequestDTO() {
     }
 
-    public ChargingStationDTO(Long id, String name, Double hourlyRate, Double power, String instruction,
-                              String picture, String video, Boolean isAvailable, UserDTO owner, LocationDTO location,
-                              LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+    public ChargingStationRequestDTO(String name, Double hourlyRate, Double power, String instruction, String picture,
+                                     String video, Boolean isAvailable, Long ownerId, Long locationId) {
         this.name = name;
         this.hourlyRate = hourlyRate;
         this.power = power;
@@ -31,20 +46,11 @@ public class ChargingStationDTO {
         this.picture = picture;
         this.video = video;
         this.isAvailable = isAvailable;
-        this.owner = owner;
-        this.location = location;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.ownerId = ownerId;
+        this.locationId = locationId;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    // Getters et Setters
     public String getName() {
         return name;
     }
@@ -101,53 +107,34 @@ public class ChargingStationDTO {
         isAvailable = available;
     }
 
-    public UserDTO getOwner() {
-        return owner;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(UserDTO owner) {
-        this.owner = owner;
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 
-    public LocationDTO getLocation() {
-        return location;
+    public Long getLocationId() {
+        return locationId;
     }
 
-    public void setLocation(LocationDTO location) {
-        this.location = location;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
     }
 
     @Override
     public String toString() {
-        return "ChargingStationDTO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+        return "ChargingStationRequestDTO{" +
+                "name='" + name + '\'' +
                 ", hourlyRate=" + hourlyRate +
                 ", power=" + power +
                 ", instruction='" + instruction + '\'' +
                 ", picture='" + picture + '\'' +
                 ", video='" + video + '\'' +
                 ", isAvailable=" + isAvailable +
-                ", owner=" + owner +
-                ", location=" + location +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
+                ", ownerId=" + ownerId +
+                ", locationId=" + locationId +
                 '}';
     }
 }
