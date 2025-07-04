@@ -1,22 +1,25 @@
 package fr.humanbooster.electricity_business.repository;
 
-import fr.humanbooster.electricity_business.model.ChargingStation;
 import fr.humanbooster.electricity_business.model.Reservation;
-import fr.humanbooster.electricity_business.model.User;
+import fr.humanbooster.electricity_business.model.ReservationStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
+@Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
-    List<Reservation> findByUser(User user);
+    boolean existsByChargingStationId(Long chargingStationId);
 
-    List<Reservation> findByChargingStation(ChargingStation chargingStation);
+    List<Reservation> findByUserIdAndEndTimeAfterAndStatusIn(Long userId, LocalDateTime currentTime, List<ReservationStatus> statuses);
 
-    List<Reservation> findByStatus(Reservation.ReservationStatus status);
+    List<Reservation> findByUserIdAndEndTimeBefore(Long userId, LocalDateTime currentTime);
 
-    Optional<Reservation> findByUserId(Long userId);
+    List<Reservation> findByUserIdAndChargingStationIdAndEndTimeBefore(Long userId, Long chargingStationId, LocalDateTime currentTime);
+    List<Reservation> findByUserIdAndStartTimeBetween(Long userId, LocalDateTime startDate, LocalDateTime endDate);
 
-    Optional<Reservation> findByChargingStationId(Long chargingStationId);
+    List<Reservation> findByUserId(Long userId);
+    List<Reservation> findByChargingStationId(Long chargingStationId);
 }

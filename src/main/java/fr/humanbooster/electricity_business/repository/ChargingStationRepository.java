@@ -1,19 +1,18 @@
 package fr.humanbooster.electricity_business.repository;
 
 import fr.humanbooster.electricity_business.model.ChargingStation;
-import fr.humanbooster.electricity_business.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
+@Repository
 public interface ChargingStationRepository extends JpaRepository<ChargingStation, Long> {
 
-    List<ChargingStation> findByIsAvailableTrue();
+    List<ChargingStation> findByIsAvailable(Boolean isAvailable);
 
-    List<ChargingStation> findByOwner(User owner);
+    List<ChargingStation> findByLocationId(Long locationId);
 
-    Optional<ChargingStation> findByIsAvailable(boolean isAvailable);
+    List<ChargingStation> findByOwnerId(Long ownerId);
 
-    Optional<ChargingStation> findByLocationId(Long locationId);
 }
