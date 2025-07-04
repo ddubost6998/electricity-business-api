@@ -1,33 +1,28 @@
 package fr.humanbooster.electricity_business.mapper;
 
 import fr.humanbooster.electricity_business.dto.ChargingStationDTO;
+import fr.humanbooster.electricity_business.dto.ChargingStationRequestDTO;
 import fr.humanbooster.electricity_business.model.ChargingStation;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-@Component
-public class ChargingStationMapper {
+@Mapper(componentModel = "spring", uses = {UserMapper.class, LocationMapper.class})
+public interface ChargingStationMapper {
 
-    public ChargingStation toEntity(ChargingStationDTO dto) {
-        if (dto == null) {
-            return null;
-        }
+    ChargingStationDTO toDto(ChargingStation chargingStation);
 
-        ChargingStation station = new ChargingStation();
-        station.setId(dto.getId());
-        station.setName(dto.getName());
-        station.setHourlyRate(dto.getHourlyRate());
-        station.setPower(dto.getPower());
-        station.setInstruction(dto.getInstruction());
-        station.setIsAvailable(dto.getIsAvailable());
-        return station;
-    }
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "owner", ignore = true)
+    @Mapping(target = "location", ignore = true)
+    ChargingStation toEntity(ChargingStationRequestDTO requestDto);
 
-    public ChargingStationDTO toDTO(ChargingStation entity) {
-        if (entity == null) {
-            return null;
-        }
-
-        return new ChargingStationDTO(
-        );
-    }
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "owner", ignore = true)
+    @Mapping(target = "location", ignore = true)
+    void updateEntityFromRequestDto(ChargingStationRequestDTO requestDto, @MappingTarget ChargingStation chargingStation);
 }

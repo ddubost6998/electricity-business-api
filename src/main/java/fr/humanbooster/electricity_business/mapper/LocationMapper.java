@@ -1,42 +1,24 @@
 package fr.humanbooster.electricity_business.mapper;
 
 import fr.humanbooster.electricity_business.dto.LocationDTO;
+import fr.humanbooster.electricity_business.dto.LocationRequestDTO;
 import fr.humanbooster.electricity_business.model.Location;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-@Component
-public class LocationMapper {
+@Mapper(componentModel = "spring")
+public interface LocationMapper {
 
-    public LocationDTO toDTO(Location entity) {
-        if (entity == null) {
-            return null;
-        }
+    LocationDTO toDto(Location location);
 
-        return new LocationDTO(
-                entity.getId(),
-                entity.getAddress(),
-                entity.getCity(),
-                entity.getZipcode(),
-                entity.getLatitude(),
-                entity.getLongitude(),
-                entity.getCountry()
-        );
-    }
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    Location toEntity(LocationRequestDTO requestDto);
 
-    public Location toEntity(LocationDTO dto) {
-        if (dto == null) {
-            return null;
-        }
-
-        Location location = new Location();
-        location.setId(dto.getId());
-        location.setAddress(dto.getAddress());
-        location.setCity(dto.getCity());
-        location.setZipcode(dto.getZipcode());
-        location.setLatitude(dto.getLatitude());
-        location.setLongitude(dto.getLongitude());
-        location.setCountry(dto.getCountry());
-
-        return location;
-    }
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    void updateEntityFromRequestDto(LocationRequestDTO requestDto, @MappingTarget Location location);
 }

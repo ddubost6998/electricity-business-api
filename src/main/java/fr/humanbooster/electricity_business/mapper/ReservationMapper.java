@@ -1,43 +1,31 @@
 package fr.humanbooster.electricity_business.mapper;
 
 import fr.humanbooster.electricity_business.dto.ReservationDTO;
+import fr.humanbooster.electricity_business.dto.ReservationRequestDTO;
 import fr.humanbooster.electricity_business.model.Reservation;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-@Component
-public class ReservationMapper {
+@Mapper(componentModel = "spring")
+public interface ReservationMapper {
 
-    public ReservationDTO toDTO(Reservation entity) {
-        if (entity == null) {
-            return null;
-        }
+    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "chargingStation.id", target = "chargingStationId")
+    ReservationDTO toDto(Reservation reservation);
 
-        return new ReservationDTO(
-                entity.getId(),
-                entity.getUser() != null ? entity.getUser().getId() : null,
-                entity.getChargingStation() != null ? entity.getChargingStation().getId() : null,
-                entity.getStartTime(),
-                entity.getEndTime(),
-                entity.getTotalPrice(),
-                entity.getStatus() != null ? ReservationDTO.ReservationStatus.valueOf(entity.getStatus().name()) : null
-        );
-    }
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "chargingStation", ignore = true)
+    Reservation toEntity(ReservationRequestDTO requestDto);
 
-    public Reservation toEntity(ReservationDTO dto) {
-        if (dto == null) {
-            return null;
-        }
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "chargingStation", ignore = true)
+    void updateEntityFromRequestDto(ReservationRequestDTO requestDto, @MappingTarget Reservation reservation);
 
-        Reservation reservation = new Reservation();
-        reservation.setId(dto.getId());
-        reservation.setStartTime(dto.getStartTime());
-        reservation.setEndTime(dto.getEndTime());
-        reservation.setTotalPrice(dto.getTotalPrice());
-
-        if (dto.getStatus() != null) {
-            reservation.setStatus(Reservation.ReservationStatus.valueOf(dto.getStatus().name()));
-        }
-
-        return reservation;
-    }
 }
