@@ -1,14 +1,12 @@
 package fr.humanbooster.electricity_business.service;
 
 import fr.humanbooster.electricity_business.dto.ReservationDTO;
-import fr.humanbooster.electricity_business.dto.ReservationRequestDTO;
-import org.springframework.transaction.annotation.Transactional;
+import fr.humanbooster.electricity_business.dto.ReservationRequestDTO; // Assurez-vous d'utiliser RequestDTO
 
 import java.util.List;
 
 public interface ReservationService {
 
-    @Transactional
     ReservationDTO createReservation(ReservationRequestDTO reservationRequestDTO);
 
     ReservationDTO createReservation(ReservationDTO reservationDTO);
@@ -17,14 +15,15 @@ public interface ReservationService {
 
     List<ReservationDTO> getAllReservations();
 
-    ReservationDTO updateReservation(Long id, ReservationDTO reservationDTO);
-
-    @Transactional
     ReservationDTO updateReservation(Long id, ReservationRequestDTO reservationRequestDTO);
 
     void deleteReservation(Long id);
 
-    List<ReservationDTO> getReservationsByUserId(Long userId);
+    ReservationDTO acceptReservation(Long id);
 
-    List<ReservationDTO> getReservationsByChargingStationId(Long chargingStationId);
+    ReservationDTO rejectReservation(Long id);
+
+    List<ReservationDTO> getCurrentReservations(Long userId);
+
+    List<ReservationDTO> getPastReservations(Long userId);
 }

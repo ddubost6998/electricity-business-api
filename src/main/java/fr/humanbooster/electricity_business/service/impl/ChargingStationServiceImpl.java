@@ -11,7 +11,6 @@ import fr.humanbooster.electricity_business.repository.LocationRepository;
 import fr.humanbooster.electricity_business.repository.ReservationRepository;
 import fr.humanbooster.electricity_business.repository.UserRepository;
 import fr.humanbooster.electricity_business.service.ChargingStationService;
-import fr.humanbooster.electricity_business.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,11 +56,6 @@ public class ChargingStationServiceImpl implements ChargingStationService {
     }
 
     @Override
-    public ChargingStationDTO createChargingStation(ChargingStationDTO chargingStationDTO) {
-        return null;
-    }
-
-    @Override
     public ChargingStationDTO getChargingStationById(Long id) {
         return chargingStationRepository.findById(id)
                 .map(chargingStationMapper::toDto)
@@ -73,11 +67,6 @@ public class ChargingStationServiceImpl implements ChargingStationService {
         return chargingStationRepository.findAll().stream()
                 .map(chargingStationMapper::toDto)
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public ChargingStationDTO updateChargingStation(Long id, ChargingStationDTO chargingStationDTO) {
-        return null;
     }
 
     @Transactional

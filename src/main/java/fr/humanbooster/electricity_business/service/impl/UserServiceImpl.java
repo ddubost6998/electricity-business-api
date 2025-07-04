@@ -56,6 +56,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDTO validateRegistration(String email, String validationCode) {
+        return null;
+    }
+
+    @Override
     public UserDTO createUser(UserRegisterDTO userRegisterDTO) {
 
         User user = userMapper.toEntity(userRegisterDTO);
@@ -87,6 +92,11 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new RuntimeException("Invalid credentials");
         }
+    }
+
+    @Override
+    public void logoutUser(Long userId) {
+
     }
 
     private String generateVerificationCode() {
@@ -127,6 +137,11 @@ public class UserServiceImpl implements UserService {
 
         User updatedUser = userRepository.save(existingUser);
         return userMapper.toDTO(updatedUser);
+    }
+
+    @Override
+    public UserDTO updateUserProfile(Long id, UserDTO userDTO) {
+        return null;
     }
 
     @Override

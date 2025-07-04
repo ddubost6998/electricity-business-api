@@ -1,7 +1,9 @@
 package fr.humanbooster.electricity_business.controller;
 
 import fr.humanbooster.electricity_business.dto.LocationDTO;
+import fr.humanbooster.electricity_business.dto.LocationRequestDTO;
 import fr.humanbooster.electricity_business.service.LocationService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,45 +20,33 @@ public class LocationRestController {
         this.locationService = locationService;
     }
 
+    @PostMapping
+    public ResponseEntity<LocationDTO> createLocation(@Valid @RequestBody LocationRequestDTO locationRequestDTO) {
+        LocationDTO createdLocation = locationService.createLocation(locationRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdLocation);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<LocationDTO> getLocationById(@PathVariable Long id) {
+        LocationDTO location = locationService.getLocationById(id);
+        return ResponseEntity.ok(location);
+    }
+
     @GetMapping
     public ResponseEntity<List<LocationDTO>> getAllLocations() {
         List<LocationDTO> locations = locationService.getAllLocations();
         return ResponseEntity.ok(locations);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<LocationDTO> getLocationById(@PathVariable Long id) {
-        try {
-            LocationDTO location = locationService.getLocationById(id);
-            return ResponseEntity.ok(location);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }
-
-    @PostMapping
-    public ResponseEntity<LocationDTO> createLocation(@RequestBody LocationDTO locationDTO) {
-        LocationDTO createdLocation = locationService.createLocation(locationDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdLocation);
-    }
-
     @PutMapping("/{id}")
-    public ResponseEntity<LocationDTO> updateLocation(@PathVariable Long id, @RequestBody LocationDTO locationDTO) {
-        try {
-            LocationDTO updatedLocation = locationService.updateLocation(id, locationDTO);
-            return ResponseEntity.ok(updatedLocation);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+    public ResponseEntity<LocationDTO> updateLocation(@PathVariable Long id, @Valid @RequestBody LocationRequestDTO locationRequestDTO) {
+        LocationDTO updatedLocation = locationService.updateLocation(id, locationRequestDTO);
+        return ResponseEntity.ok(updatedLocation);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteLocation(@PathVariable Long id) {
-        try {
-            locationService.deleteLocation(id);
-            return ResponseEntity.noContent().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        locationService.deleteLocation(id);
+        return ResponseEntity.noContent().build();
     }
 }

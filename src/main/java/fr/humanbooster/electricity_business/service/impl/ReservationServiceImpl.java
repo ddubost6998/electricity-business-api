@@ -14,7 +14,6 @@ import fr.humanbooster.electricity_business.service.ReservationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -82,11 +81,6 @@ public class ReservationServiceImpl implements ReservationService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public ReservationDTO updateReservation(Long id, ReservationDTO reservationDTO) {
-        return null;
-    }
-
     @Transactional
     @Override
     public ReservationDTO updateReservation(Long id, ReservationRequestDTO reservationRequestDTO) { // Prend un RequestDTO
@@ -119,20 +113,6 @@ public class ReservationServiceImpl implements ReservationService {
         reservationRepository.deleteById(id);
     }
 
-    @Override
-    public List<ReservationDTO> getReservationsByUserId(Long userId) {
-        return reservationRepository.findByUserId(userId).stream()
-                .map(reservationMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ReservationDTO> getReservationsByChargingStationId(Long chargingStationId) {
-        return reservationRepository.findByChargingStationId(chargingStationId).stream()
-                .map(reservationMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
     @Transactional
     public ReservationDTO acceptReservation(Long id) {
         Reservation reservation = reservationRepository.findById(id)
@@ -159,5 +139,15 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setStatus(ReservationStatus.REJECTED);
         Reservation updatedReservation = reservationRepository.save(reservation);
         return reservationMapper.toDto(updatedReservation);
+    }
+
+    @Override
+    public List<ReservationDTO> getCurrentReservations(Long userId) {
+        return List.of();
+    }
+
+    @Override
+    public List<ReservationDTO> getPastReservations(Long userId) {
+        return List.of();
     }
 }
