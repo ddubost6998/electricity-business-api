@@ -20,6 +20,4 @@ public interface UserMapper {
     User toEntity(UserRegisterDTO userRegisterDTO);
 
     UserDTO toDTO(User user);
-
-    User toEntity(UserLoginDTO userLoginDTO);
 }

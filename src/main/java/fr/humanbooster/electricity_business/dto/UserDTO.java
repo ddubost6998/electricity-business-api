@@ -11,6 +11,7 @@ public class UserDTO {
     private String phone;
     private LocalDate birthdate;
     private Boolean isVerified;
+    private String token;
 
     public UserDTO() {
     }
@@ -79,6 +80,14 @@ public class UserDTO {
 
     public void setVerified(Boolean verified) {
         isVerified = verified;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override

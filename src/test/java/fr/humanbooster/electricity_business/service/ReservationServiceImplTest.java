@@ -33,27 +33,53 @@ class ReservationServiceImplTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    // @WithMockUser
+    // Ajout pour les tests de réservations
+
     @Test
     void testCreateReservation() {
-
         ReservationDTO reservationDTO = new ReservationDTO();
         reservationDTO.setUserId(1L);
         reservationDTO.setChargingStationId(5L);
         reservationDTO.setStartTime(LocalDateTime.of(2024, 11, 25, 10, 0));
         reservationDTO.setEndTime(LocalDateTime.of(2024, 11, 25, 12, 0));
         reservationDTO.setTotalPrice(20.0);
-        reservationDTO.setStatus(ReservationDTO.ReservationStatus.PENDING);
 
-        Reservation reservation = new Reservation();
-        when(reservationMapper.toEntity(reservationDTO)).thenReturn(reservation);
-        when(reservationRepository.save(reservation)).thenReturn(reservation);
-        when(reservationMapper.toDTO(reservation)).thenReturn(reservationDTO);
+        Reservation reservationToSave = new Reservation();
+        reservationToSave.setStartTime(reservationDTO.getStartTime());
+        reservationToSave.setEndTime(reservationDTO.getEndTime());
+        reservationToSave.setTotalPrice(reservationDTO.getTotalPrice());
+
+        Reservation savedReservation = new Reservation();
+        savedReservation.setId(1L);
+        savedReservation.setStartTime(reservationDTO.getStartTime());
+        savedReservation.setEndTime(reservationDTO.getEndTime());
+        savedReservation.setTotalPrice(reservationDTO.getTotalPrice());
+
+        ReservationDTO expectedResultDTO = new ReservationDTO();
+        expectedResultDTO.setId(1L);
+        expectedResultDTO.setUserId(reservationDTO.getUserId());
+        expectedResultDTO.setChargingStationId(reservationDTO.getChargingStationId());
+        expectedResultDTO.setStartTime(reservationDTO.getStartTime());
+        expectedResultDTO.setEndTime(reservationDTO.getEndTime());
+        expectedResultDTO.setTotalPrice(reservationDTO.getTotalPrice());
+
+        when(reservationMapper.toEntity(any(fr.humanbooster.electricity_business.dto.ReservationRequestDTO.class))).thenReturn(reservationToSave);
+        when(reservationRepository.save(any(Reservation.class))).thenReturn(savedReservation);
+        when(reservationMapper.toDto(any(Reservation.class))).thenReturn(expectedResultDTO);
 
         ReservationDTO createdReservation = reservationService.createReservation(reservationDTO);
 
         assertNotNull(createdReservation);
-        assertEquals(1L, createdReservation.getUserId());
-        verify(reservationRepository, times(1)).save(reservation);
+        assertEquals(expectedResultDTO.getId(), createdReservation.getId());
+        assertEquals(expectedResultDTO.getUserId(), createdReservation.getUserId());
+        assertEquals(expectedResultDTO.getChargingStationId(), createdReservation.getChargingStationId());
+        assertEquals(expectedResultDTO.getStartTime(), createdReservation.getStartTime());
+        assertEquals(expectedResultDTO.getEndTime(), createdReservation.getEndTime());
+        assertEquals(expectedResultDTO.getTotalPrice(), createdReservation.getTotalPrice());
+
+        verify(reservationRepository, times(1)).save(reservationToSave);
+        verify(reservationMapper, times(1)).toDto(savedReservation);
     }
 
     @Test
@@ -65,7 +91,7 @@ class ReservationServiceImplTest {
         reservationDTO.setId(1L);
 
         when(reservationRepository.findById(1L)).thenReturn(Optional.of(reservation));
-        when(reservationMapper.toDTO(reservation)).thenReturn(reservationDTO);
+        when(reservationMapper.toDto(reservation)).thenReturn(reservationDTO);
 
         ReservationDTO result = reservationService.getReservationById(1L);
 
