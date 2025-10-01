@@ -14,6 +14,7 @@ public interface ReservationMapper {
     @Mapping(source = "chargingStation.id", target = "chargingStationId")
     ReservationDTO toDto(Reservation reservation);
 
+    @Mapping(target = "status", source = "chargingStationId")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
@@ -21,6 +22,7 @@ public interface ReservationMapper {
     @Mapping(target = "chargingStation", ignore = true)
     Reservation toEntity(ReservationRequestDTO requestDto);
 
+    @Mapping(target = "status", source = "chargingStationId")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)

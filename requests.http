@@ -21,6 +21,7 @@ Content-Type: application/json
 }
 
 ### Get All Reservations (Requires Auth)
+@token = variable value
 GET http://localhost:8080/api/reservations
-Authorization: Bearer {{token}} # Variable pour le token JWT
+Authorization: Bearer {{token}}
 Accept: application/json
