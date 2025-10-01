@@ -28,8 +28,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity)throws Exception{
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedHeaders(List.of("*"));
-        corsConfiguration.setAllowedOrigins(List.of("*"));
+        corsConfiguration.setAllowedHeaders(List.of("\"Authorization\", \"Content-Type\""));
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:4200"));
         corsConfiguration.setAllowedMethods(List.of("*"));
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setExposedHeaders(List.of("Authorization"));
@@ -37,7 +37,7 @@ public class SecurityConfig {
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**", "/error", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                        //.requestMatchers("/api/role/**", "/api/user/**").hasAuthority("admin")
+                        .requestMatchers("/api/role/**", "/api/user/**").hasAuthority("admin")
                         .anyRequest().authenticated()
                 )
                 .cors(Customizer.withDefaults())
@@ -47,8 +47,6 @@ public class SecurityConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
 
         httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
-        // httpSecurity.exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint));
 
         return httpSecurity.build();
     }
