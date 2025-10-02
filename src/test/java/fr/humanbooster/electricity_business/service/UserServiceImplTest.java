@@ -175,7 +175,6 @@ class UserServiceImplTest {
 
         UserDTO userDTO1 = new UserDTO(1L, "John", "Doe", "john@example.com", "0123456789", LocalDate.of(1980,1,1), false);
         UserDTO userDTO2 = new UserDTO(2L, "Jane", "Doe", "jane@example.com", "0987654321", LocalDate.of(1985,5,5), true);
-        List<UserDTO> expectedDTOs = Arrays.asList(userDTO1, userDTO2);
 
         when(userRepository.findAll()).thenReturn(users);
         when(userMapper.toDTO(user1)).thenReturn(userDTO1);
