@@ -1,27 +1,66 @@
-### Test User Registration
-POST http://localhost:8080/api/users/register
+@hostname = localhost:8080
+
+// Définition de la variable pour stocker le token
+// Utilisation de {{token}} dans les requêtes suivantes qui nécessitent une authentification
+@token = 
+
+### Test User Registration (S'assurer que l'utilisateur n'existe pas déjà)
+// POST http://localhost:8080/api/auth/register
+POST http://{{hostname}}/api/auth/register
 Content-Type: application/json
 
 {
   "firstname": "John",
   "lastname": "Doe",
-  "email": "john.doe@example.com",
+  "email": "john.doe@test.com",
   "phone": "0601020304",
   "birthdate": "1990-01-01",
   "password": "Password123!"
 }
 
-### Test User Login
-POST http://localhost:8080/api/users/login
+### Test User Login and Token Capture
+// POST http://localhost:8080/api/auth/login
+POST http://{{hostname}}/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "john.doe@example.com",
+  "email": "john.doe@test.com",
   "password": "Password123!"
 }
 
-### Get All Reservations (Requires Auth)
-@token = variable value
-GET http://localhost:8080/api/reservations
+> {%
+    client.global.set("token", response.body.token);
+%}
+
+### Get User Details (Requires Auth)
+// GET http://localhost:8080/api/users/{id}
+GET http://{{hostname}}/api/users/1
 Authorization: Bearer {{token}}
 Accept: application/json
+
+### Update User Profile (Requires Auth)
+// PUT http://localhost:8080/api/users/{id}
+PUT http://{{hostname}}/api/users/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "id": 1,
+  "firstname": "Jonathan",
+  "lastname": "Doe",
+  "email": "john.doe@test.com",
+  "phone": "0799887766",
+  "birthdate": "1990-01-01"
+}
+
+### Get All Reservations (Requires Auth)
+// GET http://localhost:8080/api/reservations
+GET http://{{hostname}}/api/reservations
+Authorization: Bearer {{token}}
+Accept: application/json
+
+### 6. Delete User (Cleanup)
+// DELETE http://localhost:8080/api/users/{id}
+// À exécuter à la fin pour nettoyer la base
+# DELETE http://{{hostname}}/api/users/1
+# Authorization: Bearer {{token}}
