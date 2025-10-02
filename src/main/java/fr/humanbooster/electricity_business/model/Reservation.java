@@ -62,19 +62,6 @@ public class Reservation {
         this.status = status;
     }
 
-    public Reservation(Long id, User user, ChargingStation chargingStation, LocalDateTime startTime, LocalDateTime endTime,
-                       Double totalPrice, ReservationStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.user = user;
-        this.chargingStation = chargingStation;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.totalPrice = totalPrice;
-        this.status = status;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
     @PrePersist
     protected void prePersist() {
         this.createdAt = LocalDateTime.now();
