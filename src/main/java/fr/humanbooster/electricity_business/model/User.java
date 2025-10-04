@@ -1,11 +1,14 @@
 package fr.humanbooster.electricity_business.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
+
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "app_user")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,6 +22,7 @@ public class User {
     private LocalDate birthdate;
 
     @Column(nullable = false)
+    @Pattern(regexp = "^\\d{10}$", message = "Numéro de téléphone invalide")
     private String phone;
 
     @Column(nullable = false, unique = true)
@@ -35,20 +39,12 @@ public class User {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    public User() {
-    }
+    @Enumerated(EnumType.STRING) // Assure la lisibilité des roles en string dans la base
+    @Column(nullable = false)
+    private Role role = Role.USER;
 
-    public User(Long id, String email, String password, String firstname, String lastname, String phone, LocalDate birthdate, String verificationCode, Boolean isVerified, Address address) {
-        this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.birthdate = birthdate;
-        this.phone = phone;
-        this.email = email;
-        this.password = password;
-        this.verificationCode = verificationCode;
-        this.isVerified = isVerified;
-        this.address = address;
+    public User() {
+        // Constructeur obligatoire pour être utilisé avec JPA
     }
 
     public Long getId() {
@@ -131,6 +127,14 @@ public class User {
         this.address = address;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -143,6 +147,7 @@ public class User {
                 ", verificationCode='" + verificationCode + '\'' +
                 ", isVerified=" + isVerified +
                 ", address=" + address +
+                ", role=" + role +
                 '}';
     }
 

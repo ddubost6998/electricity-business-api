@@ -13,6 +13,7 @@ public interface UserMapper {
     @Mapping(target = "verificationCode", ignore = true)
     @Mapping(target = "verified", ignore = true)
     @Mapping(target = "address", ignore = true)
+    @Mapping(target = "role", ignore = true)
     User toEntity(UserRegisterDTO userRegisterDTO);
 
     @Mapping(target = "token", source = "verificationCode")
