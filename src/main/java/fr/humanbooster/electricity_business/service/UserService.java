@@ -10,11 +10,12 @@ public interface UserService {
 
     UserDTO registerUser(UserRegisterDTO registerDTO);
 
-    UserDTO validateRegistration(String email, String validationCode);
+    UserDTO validateRegistration(String email, String verificationCode);
 
     UserDTO createUser(UserRegisterDTO userRegisterDTO);
 
     UserDTO loginUser(UserLoginDTO loginDTO);
+
     void logoutUser(Long userId);
 
     UserDTO getUserById(Long id);
