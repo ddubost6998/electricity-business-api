@@ -23,13 +23,13 @@ public class UserRegisterDTO {
     private String email;
 
     @NotBlank(message = "Le mot de passe est obligatoire")
-    @Size(min = 8, message = "Le mot de passe doit avoir au moins 8 caractères")
+    @Size(min = 12, message = "Le mot de passe doit avoir au moins 12 caractères")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\s]).{12,}$",
             message = "Le mot de passe doit contenir au moins 12 caractères, un chiffre, une minuscule, une majuscule et un caractère spécial.")
     private String password;
 
     @NotBlank(message = "Le numéro de téléphone est obligatoire")
-    @Pattern(regexp = "^[0-9]{10}$", message = "Le numéro de téléphone doit contenir 10 chiffres")
+    @Pattern(regexp = "^\\d{10}$", message = "Le numéro de téléphone doit contenir 10 chiffres")
     private String phone;
 
     @Past(message = "La date de naissance doit être dans le passé")
