@@ -8,8 +8,8 @@ import fr.humanbooster.electricity_business.repository.AddressRepository;
 import fr.humanbooster.electricity_business.service.AddressService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AddressServiceImpl implements AddressService {
@@ -41,9 +41,12 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public List<AddressDTO> getAllAddresses() {
-        return addressRepository.findAll().stream()
-                .map(addressMapper::toDto)
-                .collect(Collectors.toList());
+        List<AddressDTO> list = new ArrayList<>();
+        for (Address address : addressRepository.findAll()) {
+            AddressDTO dto = addressMapper.toDto(address);
+            list.add(dto);
+        }
+        return list;
     }
 
     @Override
