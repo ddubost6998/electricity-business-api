@@ -30,7 +30,7 @@ class UserRepositoryTest {
         user.setPassword("EncodedPassword123");
         user.setPhone("0708091011");
         user.setBirthdate(LocalDate.of(1990, 1, 1));
-        user.setVerified(false);
+        user.setVerified(true);
         return user;
     }
 

@@ -15,11 +15,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByVerificationCode(String verificationCode);
 
-    Optional<User> findByEmailAndVerifiedTrue(String email);
+    Optional<User> findByEmailAndIsVerifiedTrue(String email);
 
-    List<User> findAllByVerifiedTrue();
+    List<User> findAllByIsVerifiedTrue();
 
-    List<User> findAllByVerifiedFalse();
+    List<User> findAllByIsVerifiedFalse();
 
     List<User> findAllByRole(Role role);
 }

@@ -46,7 +46,7 @@ class UserServiceImplTest {
     @Test
     void shouldRegisterUserSuccessfully() {
         UserRegisterDTO registerDTO = new UserRegisterDTO(
-                "John", "Doe", "john.doe@example.com", "MySuperStrongP@ssw0rd", "0612345678", LocalDate.of(1990, 1, 1)
+                "John", "Doe", "john.doe@example.com", "My?Super!StrongP@ssw0rd", "0612345678", LocalDate.of(1990, 1, 1)
         );
 
         User userToSave = new User();
@@ -124,13 +124,14 @@ class UserServiceImplTest {
         foundUser.setId(1L);
         foundUser.setEmail("test@example.com");
         foundUser.setPassword(BCrypt.hashpw("CorrectPassword123!", BCrypt.gensalt()));
+        foundUser.setVerified(true);
 
         when(userRepository.findByEmail(loginDTO.getEmail())).thenReturn(Optional.of(foundUser));
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             userService.loginUser(loginDTO);
         });
-        assertEquals("Invalid credentials", exception.getMessage());
+        assertEquals("Identifiants invalides", exception.getMessage());
         verify(userRepository, times(1)).findByEmail(loginDTO.getEmail());
         verify(userMapper, never()).toDTO(any(User.class));
     }
